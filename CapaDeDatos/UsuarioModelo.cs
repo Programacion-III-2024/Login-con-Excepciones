@@ -16,8 +16,13 @@ namespace CapaDeDatos
 
         public bool Autenticar()
         {
-            string sql = $"SELECT COUNT(*) FROM usuarios WHERE nombre='{this.Nombre}' AND password ='{Hash.Content(this.Password)}'";
+            
+            string sql = $"SELECT COUNT(*) FROM usuarios WHERE nombre = @nombre AND password = @password";
+
             this.Comando.CommandText = sql;
+            this.Comando.Parameters.AddWithValue("@nombre", Nombre);
+            this.Comando.Parameters.AddWithValue("@password", Hash.Content(this.Password));
+            this.Comando.Prepare();
             string resultado = this.Comando.ExecuteScalar().ToString();
             if (resultado == "0")
                 return false;
@@ -26,9 +31,11 @@ namespace CapaDeDatos
         }
         public void Insertar()
         {
-            string sql = $"INSERT INTO usuarios (nombre,password) VALUES('{this.Nombre}','{Hash.Content(this.Password)}')";
-
+            string sql = $"INSERT INTO usuarios (nombre,password) VALUES(@nombre,@password)";
             this.Comando.CommandText = sql;
+            this.Comando.Parameters.AddWithValue("@nombre", Nombre);
+            this.Comando.Parameters.AddWithValue("@password", Hash.Content(this.Password));
+            this.Comando.Prepare();
             this.Comando.ExecuteNonQuery();
         }
     }
