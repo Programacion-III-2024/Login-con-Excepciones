@@ -36,13 +36,19 @@ namespace Aplicacion
 
             else
             {
-                UsuarioController.Crear(TextBoxNombre.Text, TextBoxPassword.Text);
-                MessageBox.Show("Cuenta Creada");
+                try{
+                    UsuarioController.Crear(TextBoxNombre.Text, TextBoxPassword.Text);
+                    MessageBox.Show("Cuenta Creada");
 
-                TextBoxNombre.Text = "";
-                TextBoxPassword.Text = "";
-                TextBoxPasswordConfirmacion.Text = "";
-                this.Close();
+                    TextBoxNombre.Text = "";
+                    TextBoxPassword.Text = "";
+                    TextBoxPasswordConfirmacion.Text = "";
+                    this.Close();
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
 
         }
